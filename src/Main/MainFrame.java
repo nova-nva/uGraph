@@ -24,7 +24,7 @@ import Matrix.Matrix;
 public class MainFrame extends JFrame{
     private boolean menuActivated = false;
     private boolean editionActivated = false;
-    public static String version = "uGraph 6.0 (Beta)";
+    public static String version = "[dvlp...] uGraph 7.0 (Beta)";
     public static BufferedImage logo;
 
     public static String mode = "create";
@@ -32,13 +32,16 @@ public class MainFrame extends JFrame{
 
     public static MainTheme theme;
     private String temaElegido = "Dark";
+    private String chosenWorkspace = "Graph";
     private Vector<JLabel> interactiveComps;
 
     private String nombreArchivo = null;
 
     public static boolean autoNamedNodes = true;
 
-    public MainFrame(){
+    public MainFrame(String chosenWorkspace){
+        this.chosenWorkspace = chosenWorkspace;
+
         // Caracteristicas del frame
         setTitle(version);
         setSize(800, 600);
@@ -72,105 +75,677 @@ public class MainFrame extends JFrame{
         canvas.setBorder(new EmptyBorder(5,5,5,5));
         setContentPane(canvas);
 
-        // Elementos
-        JLabel menu = new JLabel("...");
-        menu.setFont(new Font("Helvetica", Font.BOLD, 25));
-        menu.setBounds(50, 10, 100, 50);
-        pintarComponente(menu);
-        add(menu);
-        interactiveComps.add(menu);
+        // Los elementos del menu interactivo dependeran del workspace elegido
+        switch (chosenWorkspace) {
+            case "Graph" -> {
+                // ELEMENTS
+                JLabel menu = new JLabel("...");
+                menu.setFont(new Font("Helvetica", Font.BOLD, 25));
+                menu.setBounds(50, 10, 100, 50);
+                pintarComponente(menu);
+                add(menu);
+                interactiveComps.add(menu);
 
-        JLabel matrix = new JLabel("To Matrix");
-        matrix.setFont(new Font("Helvetica", Font.BOLD, 15));
-        matrix.setBounds(55, 65, 100, 50);
-        pintarComponente(matrix);
-        matrix.setVisible(false);
-        add(matrix);
-        interactiveComps.add(matrix);
+                JLabel matrix = new JLabel("To Matrix");
+                matrix.setFont(new Font("Helvetica", Font.BOLD, 15));
+                matrix.setBounds(55, 65, 100, 50);
+                pintarComponente(matrix);
+                matrix.setVisible(false);
+                add(matrix);
+                interactiveComps.add(matrix);
 
-        JLabel johnson = new JLabel("Johnson");
-        johnson.setFont(new Font("Helvetica", Font.BOLD, 15));
-        johnson.setBounds(55, 120, 100, 50);
-        pintarComponente(johnson);
-        johnson.setVisible(false);
-        add(johnson);
-        interactiveComps.add(johnson);
+                JLabel johnson = new JLabel("Johnson");
+                johnson.setFont(new Font("Helvetica", Font.BOLD, 15));
+                johnson.setBounds(55, 120, 100, 50);
+                pintarComponente(johnson);
+                johnson.setVisible(false);
+                add(johnson);
+                interactiveComps.add(johnson);
 
-        JLabel asignation = new JLabel("Assignation");
-        asignation.setFont(new Font("Helvetica", Font.BOLD, 15));
-        asignation.setBounds(50, 175, 100, 50);
-        pintarComponente(asignation);
-        asignation.setVisible(false);
-        add(asignation);
-        interactiveComps.add(asignation);
+                JLabel asignation = new JLabel("Assignation");
+                asignation.setFont(new Font("Helvetica", Font.BOLD, 15));
+                asignation.setBounds(50, 175, 100, 50);
+                pintarComponente(asignation);
+                asignation.setVisible(false);
+                add(asignation);
+                interactiveComps.add(asignation);
 
-        JLabel kramer = new JLabel("Kramer");
-        kramer.setFont(new Font("Helvetica", Font.BOLD, 15));
-        kramer.setBounds(60, 230, 100, 50);
-        pintarComponente(kramer);
-        kramer.setVisible(false);
-        add(kramer);
-        interactiveComps.add(kramer);
+                JLabel kramer = new JLabel("Kramer");
+                kramer.setFont(new Font("Helvetica", Font.BOLD, 15));
+                kramer.setBounds(60, 230, 100, 50);
+                pintarComponente(kramer);
+                kramer.setVisible(false);
+                add(kramer);
+                interactiveComps.add(kramer);
 
-        JLabel menuTail = new JLabel(".    .    .");
-        menuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
-        menuTail.setBounds(50, 275, 100, 50);
-        pintarComponente(menuTail);
-        menuTail.setVisible(false);
-        add(menuTail);
-        interactiveComps.add(menuTail);
+                JLabel menuTail = new JLabel(".    .    .");
+                menuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
+                menuTail.setBounds(50, 275, 100, 50);
+                pintarComponente(menuTail);
+                menuTail.setVisible(false);
+                add(menuTail);
+                interactiveComps.add(menuTail);
 
-        JLabel credits = new JLabel(version +" - © All Rights Reserved");
-        credits.setFont(new Font("Helvetica", Font.BOLD, 15));
-        credits.setBounds(255, 485, 500, 50);
-        pintarComponente(credits);
-        add(credits);
-        interactiveComps.add(credits);
+                JLabel credits = new JLabel(version + " - © All Rights Reserved");
+                credits.setFont(new Font("Helvetica", Font.BOLD, 15));
+                credits.setBounds(255, 485, 500, 50);
+                pintarComponente(credits);
+                add(credits);
+                interactiveComps.add(credits);
 
-        JLabel editionMenu = new JLabel("...");
-        editionMenu.setFont(new Font("Helvetica", Font.BOLD, 25));
-        editionMenu.setBounds(710, 10, 100, 50);
-        pintarComponente(editionMenu);
-        add(editionMenu);
-        interactiveComps.add(editionMenu);
+                JLabel editionMenu = new JLabel("...");
+                editionMenu.setFont(new Font("Helvetica", Font.BOLD, 25));
+                editionMenu.setBounds(710, 10, 100, 50);
+                pintarComponente(editionMenu);
+                add(editionMenu);
+                interactiveComps.add(editionMenu);
 
-        JLabel create = new JLabel("Create");
-        create.setFont(new Font("Helvetica", Font.BOLD, 15));
-        create.setBounds(667, 50, 100, 50);
-        pintarComponente(create);
-        create.setVisible(false);
-        add(create);
-        interactiveComps.add(create);
+                JLabel create = new JLabel("Create");
+                create.setFont(new Font("Helvetica", Font.BOLD, 15));
+                create.setBounds(667, 50, 100, 50);
+                pintarComponente(create);
+                create.setVisible(false);
+                add(create);
+                interactiveComps.add(create);
 
-        JLabel edit = new JLabel("Edit");
-        edit.setFont(new Font("Helvetica", Font.BOLD, 15));
-        edit.setBounds(667, 80, 100, 50);
-        pintarComponente(edit);
-        edit.setVisible(false);
-        add(edit);
-        interactiveComps.add(edit);
+                JLabel edit = new JLabel("Edit");
+                edit.setFont(new Font("Helvetica", Font.BOLD, 15));
+                edit.setBounds(667, 80, 100, 50);
+                pintarComponente(edit);
+                edit.setVisible(false);
+                add(edit);
+                interactiveComps.add(edit);
 
-        JLabel delete = new JLabel("Delete");
-        delete.setFont(new Font("Helvetica", Font.BOLD, 15));
-        delete.setBounds(667, 110, 100, 50);
-        pintarComponente(delete);
-        delete.setVisible(false);
-        add(delete);
-        interactiveComps.add(delete);
+                JLabel delete = new JLabel("Delete");
+                delete.setFont(new Font("Helvetica", Font.BOLD, 15));
+                delete.setBounds(667, 110, 100, 50);
+                pintarComponente(delete);
+                delete.setVisible(false);
+                add(delete);
+                interactiveComps.add(delete);
 
-        JLabel editionMenuTail = new JLabel(".    .    .");
-        editionMenuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
-        editionMenuTail.setBounds(652, 137, 100, 50);
-        pintarComponente(editionMenuTail);
-        editionMenuTail.setVisible(false);
-        add(editionMenuTail);
-        interactiveComps.add(editionMenuTail);
+                JLabel editionMenuTail = new JLabel(".    .    .");
+                editionMenuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
+                editionMenuTail.setBounds(652, 137, 100, 50);
+                pintarComponente(editionMenuTail);
+                editionMenuTail.setVisible(false);
+                add(editionMenuTail);
+                interactiveComps.add(editionMenuTail);
+
+                // LISTENERS
+                menu.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (!menuActivated) {
+                            menu.setText(".    .    .");
+                            matrix.setVisible(true);
+                            johnson.setVisible(true);
+                            asignation.setVisible(true);
+                            kramer.setVisible(true);
+                            menuTail.setVisible(true);
+                            menuActivated = true;
+                        } else {
+                            menu.setText("...");
+                            matrix.setVisible(false);
+                            johnson.setVisible(false);
+                            asignation.setVisible(false);
+                            kramer.setVisible(false);
+                            menuTail.setVisible(false);
+                            menuActivated = false;
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                matrix.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        callMatrix();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                johnson.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        callJohnson();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                asignation.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        callAsignation();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                kramer.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        callKramer();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                editionMenu.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (!editionActivated) {
+                            editionMenu.setText(".    .    .");
+                            editionMenu.setBounds(652, 10, 100, 50);
+                            create.setVisible(true);
+                            edit.setVisible(true);
+                            delete.setVisible(true);
+                            editionMenuTail.setVisible(true);
+                            editionActivated = true;
+                            if (mode.equals("create")) {
+                                create.setForeground(theme.getSelectedMenu());
+                            } else if (mode.equals("edit")) {
+                                edit.setForeground(theme.getSelectedMenu());
+                            } else if (mode.equals("delete")) {
+                                delete.setForeground(theme.getSelectedMenu());
+                            }
+                        } else {
+                            editionMenu.setText("...");
+                            editionMenu.setBounds(710, 10, 100, 50);
+                            create.setVisible(false);
+                            edit.setVisible(false);
+                            delete.setVisible(false);
+                            editionMenuTail.setVisible(false);
+                            editionActivated = false;
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                create.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        mode = "create";
+                        create.setForeground(theme.getSelectedMenu());
+                        edit.setForeground(theme.getLabel());
+                        delete.setForeground(theme.getLabel());
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                edit.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        mode = "edit";
+                        create.setForeground(theme.getLabel());
+                        edit.setForeground(theme.getSelectedMenu());
+                        delete.setForeground(theme.getLabel());
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                delete.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        mode = "delete";
+                        create.setForeground(theme.getLabel());
+                        edit.setForeground(theme.getLabel());
+                        delete.setForeground(theme.getSelectedMenu());
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+            }
+            case "Tree" -> {
+                JLabel menu = new JLabel("...");
+                menu.setFont(new Font("Helvetica", Font.BOLD, 25));
+                menu.setBounds(50, 10, 100, 50);
+                pintarComponente(menu);
+                add(menu);
+                interactiveComps.add(menu);
+
+                JLabel plain = new JLabel("Plain Input");
+                plain.setFont(new Font("Helvetica", Font.BOLD, 15));
+                plain.setBounds(50, 65, 100, 50);
+                pintarComponente(plain);
+                plain.setVisible(false);
+                add(plain);
+                interactiveComps.add(plain);
+
+                JLabel txt = new JLabel(".txt Input");
+                txt.setFont(new Font("Helvetica", Font.BOLD, 15));
+                txt.setBounds(55, 120, 100, 50);
+                pintarComponente(txt);
+                txt.setVisible(false);
+                add(txt);
+                interactiveComps.add(txt);
+
+                JLabel random = new JLabel("Random");
+                random.setFont(new Font("Helvetica", Font.BOLD, 15));
+                random.setBounds(60, 175, 100, 50);
+                pintarComponente(random);
+                random.setVisible(false);
+                add(random);
+                interactiveComps.add(random);
+
+                JLabel menuTail = new JLabel(".    .    .");
+                menuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
+                menuTail.setBounds(50, 220, 100, 50);
+                pintarComponente(menuTail);
+                menuTail.setVisible(false);
+                add(menuTail);
+                interactiveComps.add(menuTail);
+
+                JLabel credits = new JLabel(version + " - © All Rights Reserved");
+                credits.setFont(new Font("Helvetica", Font.BOLD, 15));
+                credits.setBounds(255, 485, 500, 50);
+                pintarComponente(credits);
+                add(credits);
+                interactiveComps.add(credits);
+
+                // LISTENERS
+                menu.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (!menuActivated) {
+                            menu.setText(".    .    .");
+                            plain.setVisible(true);
+                            txt.setVisible(true);
+                            random.setVisible(true);
+                            menuTail.setVisible(true);
+                            menuActivated = true;
+                        } else {
+                            menu.setText("...");
+                            plain.setVisible(false);
+                            txt.setVisible(false);
+                            random.setVisible(false);
+                            menuTail.setVisible(false);
+                            menuActivated = false;
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                plain.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                txt.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                random.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+            }
+            case "Sort" -> {
+                JLabel credits = new JLabel(version + " - © All Rights Reserved");
+                credits.setFont(new Font("Helvetica", Font.BOLD, 15));
+                credits.setBounds(255, 485, 500, 50);
+                pintarComponente(credits);
+                add(credits);
+                interactiveComps.add(credits);
+            }
+            case "Compet" -> {
+                JLabel credits = new JLabel(version + " - © All Rights Reserved");
+                credits.setFont(new Font("Helvetica", Font.BOLD, 15));
+                credits.setBounds(255, 485, 500, 50);
+                pintarComponente(credits);
+                add(credits);
+                interactiveComps.add(credits);
+            }
+        }
+
 
         JMenuBar menuBar = new JMenuBar();
         //menuBar.setBackground(new Color(0,0,0));
         menuBar.setBounds(0, 0, 800,25);
         menuBar.setVisible(true);
         setJMenuBar(menuBar);
+
+        JMenu workspace = new JMenu("Workspace");
+        workspace.setVisible(true);
+        menuBar.add(workspace);
+
+        JRadioButtonMenuItem graph = new JRadioButtonMenuItem("Graph");
+        if(chosenWorkspace.equals("Graph")){
+            graph.setSelected(true);
+        }
+        workspace.add(graph);
+        graph.setVisible(true);
+
+        JRadioButtonMenuItem tree = new JRadioButtonMenuItem("Tree");
+        if(chosenWorkspace.equals("Tree")){
+            tree.setSelected(true);
+        }
+        workspace.add(tree);
+        tree.setVisible(true);
+
+        JRadioButtonMenuItem sort = new JRadioButtonMenuItem("Sort");
+        if(chosenWorkspace.equals("Sort")){
+            sort.setSelected(true);
+        }
+        workspace.add(sort);
+        sort.setVisible(true);
+
+        JRadioButtonMenuItem compet = new JRadioButtonMenuItem("Compet");
+        if(chosenWorkspace.equals("Compet")){
+            compet.setSelected(true);
+        }
+        workspace.add(compet);
+        compet.setVisible(true);
+
+        graph.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graph.setSelected(true);
+                tree.setSelected(false);
+                sort.setSelected(false);
+                compet.setSelected(false);
+
+                MainFrame newFrame = new MainFrame("Graph");
+                newFrame.setVisible(true);
+                setVisible(false);
+            }
+        });
+
+        tree.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graph.setSelected(false);
+                tree.setSelected(true);
+                sort.setSelected(false);
+                compet.setSelected(false);
+
+                MainFrame newFrame = new MainFrame("Tree");
+                newFrame.setVisible(true);
+                setVisible(false);
+            }
+        });
+
+        sort.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graph.setSelected(false);
+                tree.setSelected(false);
+                sort.setSelected(true);
+                compet.setSelected(false);
+
+                MainFrame newFrame = new MainFrame("Sort");
+                newFrame.setVisible(true);
+                setVisible(false);
+            }
+        });
+
+        compet.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graph.setSelected(false);
+                tree.setSelected(false);
+                sort.setSelected(false);
+                compet.setSelected(true);
+
+                MainFrame newFrame = new MainFrame("Compet");
+                newFrame.setVisible(true);
+                setVisible(false);
+            }
+        });
 
         JMenu file = new JMenu("File");
         file.setVisible(true);
@@ -410,302 +985,6 @@ public class MainFrame extends JFrame{
         });
         clean.setVisible(true);
         view.add(clean);
-
-        menu.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(!menuActivated) {
-                    menu.setText(".    .    .");
-                    matrix.setVisible(true);
-                    johnson.setVisible(true);
-                    asignation.setVisible(true);
-                    kramer.setVisible(true);
-                    menuTail.setVisible(true);
-                    menuActivated = true;
-                }
-                else{
-                    menu.setText("...");
-                    matrix.setVisible(false);
-                    johnson.setVisible(false);
-                    asignation.setVisible(false);
-                    kramer.setVisible(false);
-                    menuTail.setVisible(false);
-                    menuActivated = false;
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        matrix.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                callMatrix();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        johnson.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                callJohnson();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        asignation.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                callAsignation();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        kramer.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                callKramer();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        editionMenu.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(!editionActivated) {
-                    editionMenu.setText(".    .    .");
-                    editionMenu.setBounds(652, 10, 100, 50);
-                    create.setVisible(true);
-                    edit.setVisible(true);
-                    delete.setVisible(true);
-                    editionMenuTail.setVisible(true);
-                    editionActivated = true;
-                    if(mode.equals("create")){
-                        create.setForeground(theme.getSelectedMenu());
-                    }
-                    else if(mode.equals("edit")){
-                        edit.setForeground(theme.getSelectedMenu());
-                    }
-                    else if(mode.equals("delete")){
-                        delete.setForeground(theme.getSelectedMenu());
-                    }
-                }
-                else{
-                    editionMenu.setText("...");
-                    editionMenu.setBounds(710, 10, 100, 50);
-                    create.setVisible(false);
-                    edit.setVisible(false);
-                    delete.setVisible(false);
-                    editionMenuTail.setVisible(false);
-                    editionActivated = false;
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        create.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mode = "create";
-                create.setForeground(theme.getSelectedMenu());
-                edit.setForeground(theme.getLabel());
-                delete.setForeground(theme.getLabel());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        edit.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mode = "edit";
-                create.setForeground(theme.getLabel());
-                edit.setForeground(theme.getSelectedMenu());
-                delete.setForeground(theme.getLabel());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        delete.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mode = "delete";
-                create.setForeground(theme.getLabel());
-                edit.setForeground(theme.getLabel());
-                delete.setForeground(theme.getSelectedMenu());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
     }
 
     private void loadFiles(JMenu root){
@@ -826,6 +1105,8 @@ public class MainFrame extends JFrame{
         in.close();
     }
     */
+
+    // Calls
 
     private void callMatrix(){
         JFrame frame = new Matrix(version + " - Graph to Matrix", theme, DrawingPanel.graph);
