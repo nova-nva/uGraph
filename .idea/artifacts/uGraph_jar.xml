@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="uGraph:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/uGraph_jar</output-path>
+    <root id="archive" name="uGraph.jar">
+      <element id="module-output" name="uGraph" />
+    </root>
+  </artifact>
+</component>
