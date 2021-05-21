@@ -107,118 +107,118 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     private String nOrigen = "", nDestino = "";
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() < 2 && (MainFrame.mode.equals("edit") || MainFrame.mode.equals("delete"))){ //clic izquierdo
-            editNode.clear();
-            editLink.clear();
-            int cnt = 0;
-            for (Nodo nodo: nodos) {
-                if(new Rectangle(nodo.getX() - Nodo.diametro/2, nodo.getY() - Nodo.diametro/2, Nodo.diametro, Nodo.diametro).contains(e.getPoint())){
-                    System.out.println("Objeto detectado -> Nodo: " + nodo.getNombre());
-                    editNode.add(nodo);
+        if(MainFrame.chosenWorkspace.equals("Graph")) {
+            if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() < 2 && (MainFrame.mode.equals("edit") || MainFrame.mode.equals("delete"))) { //clic izquierdo
+                editNode.clear();
+                editLink.clear();
+                int cnt = 0;
+                for (Nodo nodo : nodos) {
+                    if (new Rectangle(nodo.getX() - Nodo.diametro / 2, nodo.getY() - Nodo.diametro / 2, Nodo.diametro, Nodo.diametro).contains(e.getPoint())) {
+                        System.out.println("Objeto detectado -> Nodo: " + nodo.getNombre());
+                        editNode.add(nodo);
+                    }
+                    cnt++;
                 }
-                cnt++;
+
+                // para links
+                int HIT_BOX_SIZE = 6;
+                int boxX = e.getX() - HIT_BOX_SIZE / 2;
+                int boxY = e.getY() - HIT_BOX_SIZE / 2;
+                int width = HIT_BOX_SIZE;
+                int height = HIT_BOX_SIZE;
+
+                cnt = 0;
+                for (Link link : links) {
+                    Line2D choque = new Line2D() {
+                        @Override
+                        public double getX1() {
+                            return link.getCalculedX1();
+                        }
+
+                        @Override
+                        public double getY1() {
+                            return link.getCalculedY1();
+                        }
+
+                        @Override
+                        public Point2D getP1() {
+                            return null;
+                        }
+
+                        @Override
+                        public double getX2() {
+                            return link.getCalculedX2();
+                        }
+
+                        @Override
+                        public double getY2() {
+                            return link.getCalculedY2();
+                        }
+
+                        @Override
+                        public Point2D getP2() {
+                            return null;
+                        }
+
+                        @Override
+                        public void setLine(double x1, double y1, double x2, double y2) {
+
+                        }
+
+                        @Override
+                        public Rectangle2D getBounds2D() {
+                            return null;
+                        }
+                    };
+
+                    if (choque.intersects(boxX, boxY, width, height)) {
+                        System.out.println("Objeto detectado -> Link: " + link.getNombre());
+                        editLink.add(link);
+                    }
+                    cnt++;
+                }
+                if (MainFrame.mode.equals("edit"))
+                    edit();
+                else if (MainFrame.mode.equals("delete"))
+                    delete();
             }
 
-            // para links
-            int HIT_BOX_SIZE = 6;
-            int boxX = e.getX() - HIT_BOX_SIZE / 2;
-            int boxY = e.getY() - HIT_BOX_SIZE / 2;
-            int width = HIT_BOX_SIZE;
-            int height = HIT_BOX_SIZE;
+            if (e.getButton() == MouseEvent.BUTTON3 && MainFrame.mode.equals("create")) { // clic derecho
+                for (int i = 0; i < nodos.size(); i++) {
+                    if (new Rectangle(nodos.get(i).getX() - Nodo.diametro / 2, nodos.get(i).getY() - Nodo.diametro / 2, Nodo.diametro, Nodo.diametro).contains(e.getPoint())) {
+                        if (p1 == null) {
+                            p1 = new Point(nodos.get(i).getX(), nodos.get(i).getY());
+                            a = i;
+                            nOrigen = nodos.get(i).getNombre();
+                            System.out.println("Conexión desde: " + a + " (" + nOrigen + ")");
+                        } else {
+                            p2 = new Point(nodos.get(i).getX(), nodos.get(i).getY());
+                            b = i;
+                            nDestino = nodos.get(i).getNombre();
+                            System.out.println("Conexión hacia: " + b + " (" + nDestino + ")");
 
-            cnt = 0;
-            for (Link link: links) {
-                Line2D choque = new Line2D() {
-                    @Override
-                    public double getX1() {
-                        return link.getCalculedX1();
+                            String nombre = JOptionPane.showInputDialog("Ingrese el peso del enlace:");
+                            try {
+                                int peso = Integer.parseInt(nombre);
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null, "ERROR: El valor del link debe ser numerico.");
+                                p1 = null;
+                                p2 = null;
+                                a = 0;
+                                b = 0;
+                                repaint();
+                                return;
+                            }
+                            this.links.add(new Link(p1.x, p1.y, p2.x, p2.y, a, b, nOrigen, nDestino, nombre, linkCount));
+                            linkCount++;
+                            graph.get(a).put(b, Integer.parseInt(nombre));
+                            p1 = null;
+                            p2 = null;
+                            a = 0;
+                            b = 0;
+                            repaint();
+                        }
                     }
-
-                    @Override
-                    public double getY1() {
-                        return link.getCalculedY1();
-                    }
-
-                    @Override
-                    public Point2D getP1() {
-                        return null;
-                    }
-
-                    @Override
-                    public double getX2() {
-                        return link.getCalculedX2();
-                    }
-
-                    @Override
-                    public double getY2() {
-                        return link.getCalculedY2();
-                    }
-
-                    @Override
-                    public Point2D getP2() {
-                        return null;
-                    }
-
-                    @Override
-                    public void setLine(double x1, double y1, double x2, double y2) {
-
-                    }
-
-                    @Override
-                    public Rectangle2D getBounds2D() {
-                        return null;
-                    }
-                };
-
-                if (choque.intersects(boxX, boxY, width, height)) {
-                    System.out.println("Objeto detectado -> Link: " + link.getNombre());
-                    editLink.add(link);
-                }
-                cnt++;
-            }
-            if(MainFrame.mode.equals("edit"))
-                edit();
-            else if(MainFrame.mode.equals("delete"))
-                delete();
-        }
-
-        if(e.getButton() == MouseEvent.BUTTON3 && MainFrame.mode.equals("create")){ // clic derecho
-            for(int i = 0; i<nodos.size(); i++){
-                if(new Rectangle(nodos.get(i).getX() - Nodo.diametro/2 , nodos.get(i).getY() - Nodo.diametro/2, Nodo.diametro, Nodo.diametro).contains(e.getPoint())){
-                   if(p1 == null){
-                       p1 = new Point(nodos.get(i).getX(), nodos.get(i).getY());
-                       a = i;
-                       nOrigen = nodos.get(i).getNombre();
-                       System.out.println("Conexión desde: " + a + " (" + nOrigen + ")");
-                   }
-                   else{
-                       p2 = new Point(nodos.get(i).getX(), nodos.get(i).getY());
-                       b = i;
-                       nDestino = nodos.get(i).getNombre();
-                       System.out.println("Conexión hacia: " + b + " (" + nDestino + ")");
-
-                       String nombre = JOptionPane.showInputDialog("Ingrese el peso del enlace:");
-                       try{
-                           int peso = Integer.parseInt(nombre);
-                       }
-                       catch (Exception ex){
-                           JOptionPane.showMessageDialog(null, "ERROR: El valor del link debe ser numerico.");
-                           p1 = null;
-                           p2 = null;
-                           a=0;
-                           b=0;
-                           repaint();
-                           return;
-                       }
-                       this.links.add(new Link(p1.x, p1.y, p2.x, p2.y, a, b, nOrigen, nDestino, nombre, linkCount));
-                       linkCount++;
-                       graph.get(a).put(b, Integer.parseInt(nombre));
-                       p1 = null;
-                       p2 = null;
-                       a=0;
-                       b=0;
-                       repaint();
-                   }
                 }
             }
         }
@@ -226,32 +226,34 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1 && MainFrame.mode.equals("create")) {
-            String nombre;
-            if(MainFrame.autoNamedNodes)
-                nombre = nodoCount+"";
-            else
-                nombre = JOptionPane.showInputDialog("Ingrese el nombre del nodo:");
+        if(MainFrame.chosenWorkspace.equals("Graph")) {
+            System.out.println("Estamos en graph!");
+            if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1 && MainFrame.mode.equals("create")) {
+                String nombre;
+                if (MainFrame.autoNamedNodes)
+                    nombre = nodoCount + "";
+                else
+                    nombre = JOptionPane.showInputDialog("Ingrese el nombre del nodo:");
 
-            Nodo nuevo = new Nodo(e.getX(), e.getY(), nombre, nodoCount);
-            System.out.println(nuevo.getNombre());
-            this.nodos.add(new Nodo(e.getX(), e.getY(), nombre, nodoCount));
-            nodoCount++;
-            graph.add(new HashMap<Integer, Integer>());
-            repaint();
-        }
-        if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON3){
+                Nodo nuevo = new Nodo(e.getX(), e.getY(), nombre, nodoCount);
+                System.out.println(nuevo.getNombre());
+                this.nodos.add(new Nodo(e.getX(), e.getY(), nombre, nodoCount));
+                nodoCount++;
+                graph.add(new HashMap<Integer, Integer>());
+                repaint();
+            }
+            if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON3) {
 
-        }
-        else {
-            int c = 0;
-            for (Nodo nodo : nodos) {
-                if (new Rectangle(nodo.getX() - Nodo.diametro / 2, nodo.getY() - Nodo.diametro / 2, Nodo.diametro, Nodo.diametro).contains(e.getPoint())) {
-                    move = nodo;
-                    index = c;
-                    break;
+            } else {
+                int c = 0;
+                for (Nodo nodo : nodos) {
+                    if (new Rectangle(nodo.getX() - Nodo.diametro / 2, nodo.getY() - Nodo.diametro / 2, Nodo.diametro, Nodo.diametro).contains(e.getPoint())) {
+                        move = nodo;
+                        index = c;
+                        break;
+                    }
+                    c++;
                 }
-                c++;
             }
         }
     }

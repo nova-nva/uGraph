@@ -20,6 +20,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Vector;
 import Matrix.Matrix;
+import Tree.TreePanel;
 
 public class MainFrame extends JFrame{
     private boolean menuActivated = false;
@@ -32,15 +33,15 @@ public class MainFrame extends JFrame{
 
     public static MainTheme theme;
     private String temaElegido = "Dark";
-    private String chosenWorkspace = "Graph";
+    public static String chosenWorkspace = "Graph";
     private Vector<JLabel> interactiveComps;
 
     private String nombreArchivo = null;
 
     public static boolean autoNamedNodes = true;
 
-    public MainFrame(String chosenWorkspace){
-        this.chosenWorkspace = chosenWorkspace;
+    public MainFrame(String chosen){
+        chosenWorkspace = chosen;
 
         // Caracteristicas del frame
         setTitle(version);
@@ -511,6 +512,10 @@ public class MainFrame extends JFrame{
                 add(credits);
                 interactiveComps.add(credits);
 
+                TreePanel treePanel = new TreePanel();
+                treePanel.setBounds(180, 0, 606, 480);
+                add(treePanel);
+
                 // LISTENERS
                 menu.addMouseListener(new MouseListener() {
                     @Override
@@ -556,7 +561,16 @@ public class MainFrame extends JFrame{
                 plain.addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-
+                        String number = JOptionPane.showInputDialog("Enter value:");
+                        int n = 0;
+                        try{
+                            n = Integer.parseInt(number);
+                            TreePanel.tree.insert(n, "");
+                            treePanel.repaint();
+                        }
+                        catch (Exception except){
+                            System.out.println("Exception");
+                        }
                     }
 
                     @Override
@@ -1153,4 +1167,6 @@ public class MainFrame extends JFrame{
         }
         frame.setVisible(true);
     }
+
+
 }
