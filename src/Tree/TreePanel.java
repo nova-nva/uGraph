@@ -26,6 +26,12 @@ public class TreePanel extends JPanel {
         tree = new Tree();
     }
 
+    public void reset(){
+        tree = new Tree();
+        nodos.clear();
+        links.clear();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);

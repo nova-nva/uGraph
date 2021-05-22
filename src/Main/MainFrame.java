@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Vector;
 import Matrix.Matrix;
 import Tree.TreePanel;
@@ -562,14 +563,36 @@ public class MainFrame extends JFrame{
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         String number = JOptionPane.showInputDialog("Enter value:");
-                        int n = 0;
-                        try{
-                            n = Integer.parseInt(number);
-                            TreePanel.tree.insert(n, "");
-                            treePanel.repaint();
+                        if(number.length() > 1){
+                            // tenemos una entrada multiple
+                            try {
+                                String[] numbers = number.split(",");
+                                int[] nros = new int[numbers.length];
+                                // validate
+                                for (int i = 0; i<numbers.length; i++){
+                                    int currentNumber = Integer.parseInt(numbers[i].trim());
+                                    nros[i] = currentNumber;
+                                }
+                                // operate
+                                for (int i = 0; i<numbers.length; i++){
+                                    TreePanel.tree.insert(nros[i], "");
+                                    treePanel.repaint();
+                                }
+                            }
+                            catch (Exception except){
+                                JOptionPane.showMessageDialog(null, "Invalid Input!");
+                            }
                         }
-                        catch (Exception except){
-                            System.out.println("Exception");
+                        else {
+                            // tenemos una entrada simple
+                            int n = 0;
+                            try {
+                                n = Integer.parseInt(number);
+                                TreePanel.tree.insert(n, "");
+                                treePanel.repaint();
+                            } catch (Exception except) {
+                                JOptionPane.showMessageDialog(null, "Invalid Input!");
+                            }
                         }
                     }
 
@@ -597,7 +620,17 @@ public class MainFrame extends JFrame{
                 txt.addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-
+                        treePanel.reset();
+                        FileReader reader = new FileReader();
+                        try {
+                            Vector<Integer> data = reader.load();
+                            for(int i = 0; i<data.size(); i++){
+                                TreePanel.tree.insert(data.get(i), "");
+                                treePanel.repaint();
+                            }
+                        } catch (IOException ioException) {
+                            JOptionPane.showMessageDialog(null, "Operation Canceled");
+                        }
                     }
 
                     @Override
@@ -624,7 +657,53 @@ public class MainFrame extends JFrame{
                 random.addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                        // reset all;
+                        treePanel.reset();
 
+                        // solicitar nro de variables a generar
+                        int vars = 0;
+                        try{
+                            vars = Integer.parseInt(JOptionPane.showInputDialog("Nro de aleatorios a generar: "));
+                            int infLimit = 0, supLimit = 0;
+                            try{
+                                // multi input for limits
+                                JTextField xField = new JTextField(5);
+                                JTextField yField = new JTextField(5);
+
+                                JPanel myPanel = new JPanel();
+                                myPanel.add(new JLabel("Inferior limit:"));
+                                myPanel.add(xField);
+                                myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+                                myPanel.add(new JLabel("Superior limit:"));
+                                myPanel.add(yField);
+
+                                int result = JOptionPane.showConfirmDialog(null, myPanel,
+                                        "Limits", JOptionPane.OK_CANCEL_OPTION);
+                                if (result == JOptionPane.OK_OPTION) {
+                                    System.out.println("x value: " + xField.getText());
+                                    System.out.println("y value: " + yField.getText());
+                                    infLimit = Integer.parseInt(xField.getText());
+                                    supLimit = Integer.parseInt(yField.getText());
+
+                                    Random rnd = new Random();
+                                    Vector<Integer> data = new Vector<>();
+                                    for(int i = 0; i<vars; i++){
+                                        data.add((int) (rnd.nextDouble() * (supLimit + 1) + infLimit));
+                                    }
+                                    for(int i = 0; i<data.size(); i++){
+                                        TreePanel.tree.insert(data.get(i), "");
+                                        treePanel.repaint();
+                                    }
+                                }
+
+                            }
+                            catch (Exception exc){
+                                JOptionPane.showMessageDialog(null, "Invalid limits!");
+                            }
+                        }
+                        catch (Exception ex){
+                            JOptionPane.showMessageDialog(null, "Invalid range!");
+                        }
                     }
 
                     @Override
