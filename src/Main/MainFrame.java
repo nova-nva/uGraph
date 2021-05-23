@@ -25,11 +25,12 @@ import java.util.Random;
 import java.util.Vector;
 import Matrix.Matrix;
 import Tree.TreePanel;
+import Tree.TreePaths;
 
 public class MainFrame extends JFrame{
     private boolean menuActivated = false;
     private boolean editionActivated = false;
-    public static String version = "uGraph 7.0 (Beta)";
+    public static String version = "uGraph 7.1 (Beta)";
     public static BufferedImage logo;
 
     public static String mode = "create";
@@ -538,9 +539,17 @@ public class MainFrame extends JFrame{
                 add(random);
                 interactiveComps.add(random);
 
+                JLabel path = new JLabel("See Paths");
+                path.setFont(new Font("Helvetica", Font.BOLD, 15));
+                path.setBounds(55, 230, 100, 50);
+                pintarComponente(path);
+                path.setVisible(false);
+                add(path);
+                interactiveComps.add(path);
+
                 JLabel menuTail = new JLabel(".    .    .");
                 menuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
-                menuTail.setBounds(50, 220, 100, 50);
+                menuTail.setBounds(50, 275, 100, 50);
                 pintarComponente(menuTail);
                 menuTail.setVisible(false);
                 add(menuTail);
@@ -566,6 +575,7 @@ public class MainFrame extends JFrame{
                             plain.setVisible(true);
                             txt.setVisible(true);
                             random.setVisible(true);
+                            path.setVisible(true);
                             menuTail.setVisible(true);
                             menuActivated = true;
                         } else {
@@ -573,6 +583,7 @@ public class MainFrame extends JFrame{
                             plain.setVisible(false);
                             txt.setVisible(false);
                             random.setVisible(false);
+                            path.setVisible(false);
                             menuTail.setVisible(false);
                             menuActivated = false;
                         }
@@ -744,6 +755,34 @@ public class MainFrame extends JFrame{
                         catch (Exception ex){
                             JOptionPane.showMessageDialog(null, "Invalid range!");
                         }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                path.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        TreePaths frame = new TreePaths(version + " - Tree Paths", theme, TreePanel.tree);
+                        frame.setVisible(true);
                     }
 
                     @Override

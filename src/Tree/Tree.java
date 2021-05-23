@@ -48,6 +48,7 @@ public class Tree {
 
     Node root;
     int counter = 0;
+    String inOrderCad = "", preOrderCad = "", postOrderCad = "";
 
     public Tree(){
         root = null;
@@ -112,27 +113,39 @@ public class Tree {
         }
     }
 
-    public void inOrder(Node n){
+    public String inOrder(Node n){
         if(n != null){
             inOrder(n.left);
             System.out.println("Index: " + n.key);
+            inOrderCad += n.key + ", ";
             inOrder(n.right);
         }
+        return inOrderCad;
     }
 
-    public void preOrder(Node n){
+    public String preOrder(Node n){
         if(n != null){
             System.out.println("Index: " + n.key);
+            preOrderCad += n.key + ", ";
             preOrder(n.left);
             preOrder(n.right);
         }
+        return preOrderCad;
     }
 
-    public void postOrder(Node n){
+    public String postOrder(Node n){
         if(n != null){
             postOrder(n.left);
             postOrder(n.right);
             System.out.println("Index: " + n.key);
+            postOrderCad += n.key + ", ";
         }
+        return postOrderCad;
+    }
+
+    public void resetStrings(){
+        inOrderCad = "";
+        preOrderCad = "";
+        postOrderCad = "";
     }
 }
