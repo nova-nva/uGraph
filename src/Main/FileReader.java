@@ -10,6 +10,7 @@ import java.util.Vector;
 
 public class FileReader {
     Vector<Integer> data;
+    String plainInput = "";
 
     public FileReader() {
         data = new Vector<>();
@@ -26,6 +27,7 @@ public class FileReader {
             try(BufferedReader br = new BufferedReader(new java.io.FileReader(seleccion))){
                 String linea;
                 while((linea = br.readLine()) != null) {
+                    plainInput += linea;
                     System.out.println(linea);
 
                     // parse and add data

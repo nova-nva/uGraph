@@ -3,6 +3,7 @@ package Main;
 import Asignacion.Asignacion;
 import Johnson.Johnson;
 import Kramer.Kramer;
+import Sorts.SortingPanel;
 import Themes.MainTheme;
 import Themes.PhoenixDark;
 import Themes.PhoenixLight;
@@ -10,6 +11,7 @@ import Themes.PhoenixLight;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +36,7 @@ public class MainFrame extends JFrame{
 
     public static MainTheme theme;
     private String temaElegido = "Dark";
-    public static String chosenWorkspace = "Graph";
+    public static String chosenWorkspace = "Sort";
     private Vector<JLabel> interactiveComps;
 
     private String nombreArchivo = null;
@@ -728,12 +730,471 @@ public class MainFrame extends JFrame{
                 });
             }
             case "Sort" -> {
+                JLabel menu = new JLabel("...");
+                menu.setFont(new Font("Helvetica", Font.BOLD, 25));
+                menu.setBounds(50, 10, 100, 50);
+                pintarComponente(menu);
+                add(menu);
+                interactiveComps.add(menu);
+
+                JLabel txt = new JLabel(".txt Input");
+                txt.setFont(new Font("Helvetica", Font.BOLD, 15));
+                txt.setBounds(55, 65, 100, 50);
+                pintarComponente(txt);
+                txt.setVisible(false);
+                add(txt);
+                interactiveComps.add(txt);
+
+                JLabel random = new JLabel("Random");
+                random.setFont(new Font("Helvetica", Font.BOLD, 15));
+                random.setBounds(60, 120, 100, 50);
+                pintarComponente(random);
+                random.setVisible(false);
+                add(random);
+                interactiveComps.add(random);
+
+                JLabel menuTail = new JLabel(".    .    .");
+                menuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
+                menuTail.setBounds(50, 165, 100, 50);
+                pintarComponente(menuTail);
+                menuTail.setVisible(false);
+                add(menuTail);
+                interactiveComps.add(menuTail);
+
                 JLabel credits = new JLabel(version + " - © All Rights Reserved");
                 credits.setFont(new Font("Helvetica", Font.BOLD, 15));
                 credits.setBounds(255, 485, 500, 50);
                 pintarComponente(credits);
                 add(credits);
                 interactiveComps.add(credits);
+
+                SortingPanel sortingPanel = new SortingPanel(800 - 180, 480);
+                sortingPanel.setBounds(180, 0, 606, 480);
+                sortingPanel.setLayout(null);
+                add(sortingPanel);
+
+                JLabel inputLabel = new JLabel("Input Data:");
+                inputLabel.setFont(new Font("Helvetica", Font.PLAIN, 13));
+                inputLabel.setBounds(10, 0, 500, 50);
+                pintarComponente(inputLabel);
+                sortingPanel.add(inputLabel);
+
+                JTextArea inputData = new JTextArea("");
+                inputData.setEditable(false);
+                JScrollPane inputScroll = new JScrollPane(inputData);
+                inputScroll.setBounds(0, 50, sortingPanel.getWidth()/2 - 50, 190);
+                sortingPanel.add(inputScroll);
+
+                JLabel outputLabel = new JLabel("Sorted Data:");
+                outputLabel.setFont(new Font("Helvetica", Font.PLAIN, 13));
+                outputLabel.setBounds(10, 480/2, 500, 50);
+                outputLabel.setAutoscrolls(true);
+                pintarComponente(outputLabel);
+                sortingPanel.add(outputLabel);
+
+                JTextArea outputData = new JTextArea("");
+                outputData.setEditable(false);
+                JScrollPane outputScroll = new JScrollPane(outputData);
+                outputScroll.setBounds(0, 480/2+50, sortingPanel.getWidth()/2 - 50, 190);
+                sortingPanel.add(outputScroll);
+
+                JLabel results = new JLabel("Results");
+                results.setFont(new Font("Helvetica", Font.BOLD, 15));
+                results.setBounds(sortingPanel.getWidth()/2 + 110, 0, 500, 50);
+                pintarComponente(results);
+                sortingPanel.add(results);
+
+                JLabel selectionLabel = new JLabel("Selection sort:");
+                selectionLabel.setFont(new Font("Helvetica", Font.PLAIN, 13));
+                selectionLabel.setBounds(sortingPanel.getWidth()/2 + 10, 35, 500, 50);
+                pintarComponente(selectionLabel);
+                sortingPanel.add(selectionLabel);
+
+                JLabel selectionResult = new JLabel("");
+                selectionResult.setFont(new Font("Helvetica", Font.ITALIC, 13));
+                selectionResult.setBounds(sortingPanel.getWidth()/2 + 10, 55, 500, 50);
+                pintarComponente(selectionResult);
+                sortingPanel.add(selectionResult);
+
+                JLabel insertionLabel = new JLabel("Insertion sort:");
+                insertionLabel.setFont(new Font("Helvetica", Font.PLAIN, 13));
+                insertionLabel.setBounds(sortingPanel.getWidth()/2 + 10, 135, 500, 50);
+                pintarComponente(insertionLabel);
+                sortingPanel.add(insertionLabel);
+
+                JLabel insertResult = new JLabel("");
+                insertResult.setFont(new Font("Helvetica", Font.ITALIC, 13));
+                insertResult.setBounds(sortingPanel.getWidth()/2 + 10, 155, 500, 50);
+                pintarComponente(insertResult);
+                sortingPanel.add(insertResult);
+
+
+                JLabel shellLabel = new JLabel("Shell sort:");
+                shellLabel.setFont(new Font("Helvetica", Font.PLAIN, 13));
+                shellLabel.setBounds(sortingPanel.getWidth()/2 + 10, 235, 500, 50);
+                pintarComponente(shellLabel);
+                sortingPanel.add(shellLabel);
+
+                JLabel shellResult = new JLabel("");
+                shellResult.setFont(new Font("Helvetica", Font.ITALIC, 13));
+                shellResult.setBounds(sortingPanel.getWidth()/2 + 10, 255, 500, 50);
+                pintarComponente(shellResult);
+                sortingPanel.add(shellResult);
+
+
+                JLabel mergeLabel = new JLabel("Merge sort:");
+                mergeLabel.setFont(new Font("Helvetica", Font.PLAIN, 13));
+                mergeLabel.setBounds(sortingPanel.getWidth()/2 + 10, 335, 500, 50);
+                pintarComponente(mergeLabel);
+                sortingPanel.add(mergeLabel);
+
+                JLabel mergeResult = new JLabel("");
+                mergeResult.setFont(new Font("Helvetica", Font.ITALIC, 13));
+                mergeResult.setBounds(sortingPanel.getWidth()/2 + 10, 355, 500, 50);
+                pintarComponente(mergeResult);
+                sortingPanel.add(mergeResult);
+
+                // LISTENERS
+                menu.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (!menuActivated) {
+                            menu.setText(".    .    .");
+                            txt.setVisible(true);
+                            random.setVisible(true);
+                            menuTail.setVisible(true);
+                            menuActivated = true;
+                        } else {
+                            menu.setText("...");
+                            txt.setVisible(false);
+                            random.setVisible(false);
+                            menuTail.setVisible(false);
+                            menuActivated = false;
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                txt.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        // reset
+                        sortingPanel.reset();
+                        selectionResult.setText("");
+                        insertResult.setText("");
+                        shellResult.setText("");
+                        mergeResult.setText("");
+                        inputData.setText("");
+                        outputData.setText("");
+
+                        FileReader reader = new FileReader();
+                        try {
+                            // general data
+                            Vector<Integer> data = reader.load();
+                            sortingPanel.setData(data);
+                            sortingPanel.reset();
+                            inputData.setText(reader.plainInput);
+
+                            int result = JOptionPane.showConfirmDialog(null, "Reverse order sort?",
+                                    "Reverse", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                            // final times
+                            long selectionTime = -1, insertionTime = -1, shellTime = -1, mergeTime = -1;
+                            if (result == JOptionPane.OK_OPTION) {
+                                // control de tiempo
+                                long inicio, fin;
+
+                                // selection
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.selectionSort(true);
+                                fin = System.currentTimeMillis();
+                                selectionTime = fin - inicio;
+                                selectionResult.setText((selectionTime/1000) + " s");
+
+                                // insertion
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.insertionSort(true);
+                                fin = System.currentTimeMillis();
+                                insertionTime = fin - inicio;
+                                insertResult.setText((insertionTime/1000) + " s");
+
+                                // shell
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.shellSort(true);
+                                fin = System.currentTimeMillis();
+                                shellTime = fin - inicio;
+                                shellResult.setText((shellTime/1000) + " s");
+
+                                // merge
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.mergeSort(data, 0, data.size() - 1, true);
+                                fin = System.currentTimeMillis();
+                                mergeTime = fin - inicio;
+                                mergeResult.setText((mergeTime/1000) + " s");
+                            }
+                            else if(result == JOptionPane.NO_OPTION){
+                                // control de tiempo
+                                long inicio, fin;
+
+                                // selection
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.selectionSort();
+                                fin = System.currentTimeMillis();
+                                selectionTime = fin - inicio;
+                                selectionResult.setText((selectionTime/1000) + " s");
+
+                                // insertion
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.insertionSort();
+                                fin = System.currentTimeMillis();
+                                insertionTime = fin - inicio;
+                                insertResult.setText((insertionTime/1000) + " s");
+
+                                // shell
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.shellSort();
+                                fin = System.currentTimeMillis();
+                                shellTime = fin - inicio;
+                                shellResult.setText((shellTime/1000) + " s");
+
+                                // merge
+                                inicio = System.currentTimeMillis();
+                                SortingPanel.sorter.mergeSort(data, 0, data.size() - 1, false);
+                                fin = System.currentTimeMillis();
+                                mergeTime = fin - inicio;
+                                mergeResult.setText((mergeTime/1000) + " s");
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "Operation cancelled");
+                            }
+
+                            if(result != JOptionPane.CANCEL_OPTION){
+                                System.out.println("Selection sort: " + selectionTime);
+                                System.out.println("Insertion sort: " + insertionTime);
+                                System.out.println("Shell sort: " + shellTime);
+                                System.out.println("Merge sort: " + mergeTime);
+                                outputData.setText(SortingPanel.sorter.plainSortedData());
+
+                            }
+                        } catch (IOException ioException) {
+                            JOptionPane.showMessageDialog(null, "Operation Canceled");
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                random.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        // reset all;
+                        sortingPanel.reset();
+                        selectionResult.setText("");
+                        insertResult.setText("");
+                        shellResult.setText("");
+                        mergeResult.setText("");
+                        inputData.setText("");
+                        outputData.setText("");
+
+                        // solicitar nro de variables a generar
+                        int vars = 0;
+                        try{
+                            vars = Integer.parseInt(JOptionPane.showInputDialog("Nro de aleatorios a generar: "));
+                            int infLimit = 0, supLimit = 0;
+                            try{
+                                // multi input for limits
+                                JTextField xField = new JTextField(5);
+                                JTextField yField = new JTextField(5);
+
+                                JPanel myPanel = new JPanel();
+                                myPanel.add(new JLabel("Inferior limit:"));
+                                myPanel.add(xField);
+                                myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+                                myPanel.add(new JLabel("Superior limit:"));
+                                myPanel.add(yField);
+
+                                int result = JOptionPane.showConfirmDialog(null, myPanel,
+                                        "Limits", JOptionPane.OK_CANCEL_OPTION);
+                                if (result == JOptionPane.OK_OPTION) {
+                                    System.out.println("x value: " + xField.getText());
+                                    System.out.println("y value: " + yField.getText());
+                                    infLimit = Integer.parseInt(xField.getText());
+                                    supLimit = Integer.parseInt(yField.getText());
+
+                                    Random rnd = new Random();
+                                    Vector<Integer> data = new Vector<>();
+                                    String cad = "";
+                                    int charCounter = 0;
+                                    for(int i = 0; i<vars; i++){
+                                        data.add((int) (rnd.nextDouble() * (supLimit + 1) + infLimit));
+                                        if(i == vars-1) {
+                                            cad += data.get(i);
+                                            charCounter += String.valueOf(data.get(i)).length();
+                                        }
+                                        else {
+                                            cad += data.get(i) + ", ";
+                                            charCounter += String.valueOf(data.get(i)).length() + 2;
+                                        }
+                                        if(charCounter >= 50){
+                                            cad += "\n";
+                                            charCounter = 0;
+                                        }
+                                    }
+
+                                    sortingPanel.setData(data);
+                                    sortingPanel.reset();
+                                    inputData.setText(cad);
+
+                                    int result2 = JOptionPane.showConfirmDialog(null, "Reverse order sort?",
+                                            "Reverse", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                                    // final times
+                                    long selectionTime = -1, insertionTime = -1, shellTime = -1, mergeTime = -1;
+                                    if (result2 == JOptionPane.OK_OPTION) {
+                                        // control de tiempo
+                                        long inicio, fin;
+
+                                        // selection
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.selectionSort(true);
+                                        fin = System.currentTimeMillis();
+                                        selectionTime = fin - inicio;
+                                        selectionResult.setText(selectionTime + " ms");
+
+                                        // insertion
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.insertionSort(true);
+                                        fin = System.currentTimeMillis();
+                                        insertionTime = fin - inicio;
+                                        insertResult.setText(insertionTime + " ms");
+
+                                        // shell
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.shellSort(true);
+                                        fin = System.currentTimeMillis();
+                                        shellTime = fin - inicio;
+                                        shellResult.setText(shellTime + " ms");
+
+                                        // merge
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.mergeSort(data, 0, data.size() - 1, true);
+                                        fin = System.currentTimeMillis();
+                                        mergeTime = fin - inicio;
+                                        mergeResult.setText(mergeTime + " ms");
+                                    }
+                                    else if(result2 == JOptionPane.NO_OPTION){
+                                        // control de tiempo
+                                        long inicio, fin;
+
+                                        // selection
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.selectionSort();
+                                        fin = System.currentTimeMillis();
+                                        selectionTime = fin - inicio;
+                                        selectionResult.setText(selectionTime + " ms");
+
+                                        // insertion
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.insertionSort();
+                                        fin = System.currentTimeMillis();
+                                        insertionTime = fin - inicio;
+                                        insertResult.setText(insertionTime + " ms");
+
+                                        // shell
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.shellSort();
+                                        fin = System.currentTimeMillis();
+                                        shellTime = fin - inicio;
+                                        shellResult.setText(shellTime + " ms");
+
+                                        // merge
+                                        inicio = System.currentTimeMillis();
+                                        SortingPanel.sorter.mergeSort(data, 0, data.size() - 1, false);
+                                        fin = System.currentTimeMillis();
+                                        mergeTime = fin - inicio;
+                                        mergeResult.setText(mergeTime + " ms");
+                                    }
+                                    else{
+                                        JOptionPane.showMessageDialog(null, "Operation cancelled");
+                                    }
+
+                                    if(result2 != JOptionPane.CANCEL_OPTION){
+                                        System.out.println("Selection sort: " + selectionTime);
+                                        System.out.println("Insertion sort: " + insertionTime);
+                                        System.out.println("Shell sort: " + shellTime);
+                                        System.out.println("Merge sort: " + mergeTime);
+                                        outputData.setText(SortingPanel.sorter.plainSortedData());
+
+                                    }
+                                }
+
+                            }
+                            catch (Exception exc){
+                                JOptionPane.showMessageDialog(null, "Invalid limits!");
+                            }
+                        }
+                        catch (Exception ex){
+                            JOptionPane.showMessageDialog(null, "Invalid range!");
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
             }
             case "Compet" -> {
                 JLabel credits = new JLabel(version + " - © All Rights Reserved");
