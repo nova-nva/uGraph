@@ -1,6 +1,7 @@
 package Main;
 
 import Asignacion.Asignacion;
+import Compet.Compet;
 import Johnson.Johnson;
 import Kramer.Kramer;
 import Sorts.SortingPanel;
@@ -28,7 +29,7 @@ import Tree.TreePanel;
 public class MainFrame extends JFrame{
     private boolean menuActivated = false;
     private boolean editionActivated = false;
-    public static String version = "[dvlp...] uGraph 7.0 (Beta)";
+    public static String version = "uGraph 7.0 (Beta)";
     public static BufferedImage logo;
 
     public static String mode = "create";
@@ -122,9 +123,17 @@ public class MainFrame extends JFrame{
                 add(kramer);
                 interactiveComps.add(kramer);
 
+                JLabel compet = new JLabel("Compet");
+                compet.setFont(new Font("Helvetica", Font.BOLD, 15));
+                compet.setBounds(60, 285, 100, 50);
+                pintarComponente(compet);
+                compet.setVisible(false);
+                add(compet);
+                interactiveComps.add(compet);
+
                 JLabel menuTail = new JLabel(".    .    .");
                 menuTail.setFont(new Font("Helvetica", Font.BOLD, 25));
-                menuTail.setBounds(50, 275, 100, 50);
+                menuTail.setBounds(50, 330, 100, 50);
                 pintarComponente(menuTail);
                 menuTail.setVisible(false);
                 add(menuTail);
@@ -186,6 +195,7 @@ public class MainFrame extends JFrame{
                             johnson.setVisible(true);
                             asignation.setVisible(true);
                             kramer.setVisible(true);
+                            compet.setVisible(true);
                             menuTail.setVisible(true);
                             menuActivated = true;
                         } else {
@@ -194,6 +204,7 @@ public class MainFrame extends JFrame{
                             johnson.setVisible(false);
                             asignation.setVisible(false);
                             kramer.setVisible(false);
+                            compet.setVisible(false);
                             menuTail.setVisible(false);
                             menuActivated = false;
                         }
@@ -305,6 +316,33 @@ public class MainFrame extends JFrame{
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         callKramer();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+                compet.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        callCompet();
                     }
 
                     @Override
@@ -1196,13 +1234,8 @@ public class MainFrame extends JFrame{
                     }
                 });
             }
-            case "Compet" -> {
-                JLabel credits = new JLabel(version + " - © All Rights Reserved");
-                credits.setFont(new Font("Helvetica", Font.BOLD, 15));
-                credits.setBounds(255, 485, 500, 50);
-                pintarComponente(credits);
-                add(credits);
-                interactiveComps.add(credits);
+            default -> {
+                System.out.println("No se ha elegido ningun tipo");
             }
         }
 
@@ -1238,20 +1271,12 @@ public class MainFrame extends JFrame{
         workspace.add(sort);
         sort.setVisible(true);
 
-        JRadioButtonMenuItem compet = new JRadioButtonMenuItem("Compet");
-        if(chosenWorkspace.equals("Compet")){
-            compet.setSelected(true);
-        }
-        workspace.add(compet);
-        compet.setVisible(true);
-
         graph.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 graph.setSelected(true);
                 tree.setSelected(false);
                 sort.setSelected(false);
-                compet.setSelected(false);
 
                 MainFrame newFrame = new MainFrame("Graph");
                 newFrame.setVisible(true);
@@ -1265,7 +1290,6 @@ public class MainFrame extends JFrame{
                 graph.setSelected(false);
                 tree.setSelected(true);
                 sort.setSelected(false);
-                compet.setSelected(false);
 
                 MainFrame newFrame = new MainFrame("Tree");
                 newFrame.setVisible(true);
@@ -1279,23 +1303,8 @@ public class MainFrame extends JFrame{
                 graph.setSelected(false);
                 tree.setSelected(false);
                 sort.setSelected(true);
-                compet.setSelected(false);
 
                 MainFrame newFrame = new MainFrame("Sort");
-                newFrame.setVisible(true);
-                setVisible(false);
-            }
-        });
-
-        compet.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                graph.setSelected(false);
-                tree.setSelected(false);
-                sort.setSelected(false);
-                compet.setSelected(true);
-
-                MainFrame newFrame = new MainFrame("Compet");
                 newFrame.setVisible(true);
                 setVisible(false);
             }
@@ -1705,6 +1714,11 @@ public class MainFrame extends JFrame{
             JOptionPane.showMessageDialog(null, "Debe ingresar un numero de las opciones");
             return;
         }
+        frame.setVisible(true);
+    }
+
+    private void callCompet(){
+        Compet frame = new Compet(version + " Compet Algorithm", theme, DrawingPanel.graph);
         frame.setVisible(true);
     }
 
