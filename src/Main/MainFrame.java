@@ -30,7 +30,7 @@ import Tree.TreePaths;
 public class MainFrame extends JFrame{
     private boolean menuActivated = false;
     private boolean editionActivated = false;
-    public static String version = "uGraph 7.1 (Beta)";
+    public static String version = "uGraph 7.0 (Beta)";
     public static BufferedImage logo;
 
     public static String mode = "create";
