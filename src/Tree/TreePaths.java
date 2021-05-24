@@ -42,7 +42,7 @@ public class TreePaths extends JFrame{
         JTextArea inOrder = new JTextArea(tree.inOrder(tree.getRoot()));
         inOrder.setEditable(false);
         JScrollPane inOrderScroll = new JScrollPane(inOrder);
-        inOrderScroll.setBounds(15, 50, 500, 100);
+        inOrderScroll.setBounds(15,         50, 500, 100);
         add(inOrderScroll);
 
         JLabel label2 = new JLabel("Pre Order");
